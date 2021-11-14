@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Task 2</title>
+
+		<style type="text/css">
+
+			
+			body{
+
+				background-color: rgba(161, 188, 245, 0);
+			}
+			
+			#users{
+
+				display: none;
+				background-color: #c890e9;
+				justify-content: space-around;
+				height: auto;
+				width: 300px;			
+				padding-top: 20px;
+				padding-bottom: 20px;
+				margin-right: 0px;
+				align-self: right;
+
+			}
+
+			header{
+
+				width: auto;
+				height: 50px;
+				background-color: #c890e9;
+				justify-content: space-between;
+				display: flex;
+				padding: 0 100px;
+			}
+
+			.user{
+
+				width: 130px;
+				height: 130px;
+				border: solid;
+				font-size: 70%;
+				padding-left: 10px;
+				padding-bottom: 5px;
+
+			}
+
+			.user img{
+
+				border-radius: 50%;
+				height: 70px;
+				width: 70px;
+
+			}
+			
+			#users_grid1{
+				display: flex;
+				justify-content: space-around;
+				text-align: left;
+			}
+			#users_grid2{
+				display: flex;
+				justify-content: space-around;
+				text-align: left;
+			}
+			#users_grid3{
+				display: flex;
+				justify-content: space-around;
+				text-align: left;
+			}
+
+
+			#getuser{
+
+				background: #c890e9;
+				width: auto;
+				height: 30px;
+				align-self: center;
+			}
+
+			.loader{
+				background-color:#c890e9;
+				bottom:0;
+				height:100%;
+				left:0;
+				position:fixed;
+				right:0;
+				top:0;
+				width:100%;
+				z-index:9999
+				}
+			.ellipsis{
+				margin:0 auto;
+				position:relative;
+				top:50%;
+				-moz-transform:translateY(-50%);
+				-webkit-transform:translateY(-50%);
+				transform:translateY(-50%);
+				width:64px;
+				text-align:center;
+				z-index:9999
+				}
+				.ellipsis span{
+					display:inline-block;
+					width:15px;
+					height:15px;
+					border-radius:50%;
+					background:#ddff66;
+					-webkit-animation:ball-pulse-sync 1s 0s infinite ease-in-out;
+					animation:ball-pulse-sync 1s 0s infinite ease-in-out
+					}
+				.ellipsis span:nth-child(1){
+					-webkit-animation:ball-pulse-sync 1s -.14s infinite ease-in-out;
+					animation:ball-pulse-sync 1s -.14s infinite ease-in-out
+					}
+				.ellipsis span:nth-child(2){
+					-webkit-animation:ball-pulse-sync 1s -70ms infinite ease-in-out;
+					animation:ball-pulse-sync 1s -70ms infinite ease-in-out}
+				@-webkit-keyframes ball-pulse-sync{
+					33%{
+					-webkit-transform:translateY(10px); 
+					transform:translateY(10px)
+					}
+					66%{
+						-webkit-transform:translateY(-10px);
+						transform:translateY(-10px)
+					}
+					100%{
+						-webkit-transform:translateY(0);
+						transform:translateY(0)
+					}
+				}
+				
+
+		</style>
+	</head>
+	<body>
+
+		<header>
+			
+			<h2>Addidas</h2>
+			
+			<button onclick="display_users(event)" id="getuser">Get user</button>
+
+		</header>
+
+		<div id="loader_div"></div>
+
+		<div align="right">
+			<div id="users">
+				<div id="users_grid1" align="right"></div><br>
+				<div id="users_grid2" align="right"></div><br>
+				<div id="users_grid3" align="right"></div>
+		    </div>
+		<div>
+
+		<script type="text/javascript">
+
+			let obj_arr = [];
+			let obj_str = "";
+
+			function fetching(){
+				
+				fetch("https://reqres.in/api/users?page=1")
+				  .then(res => {
+				  	return res.json()
+				  })
+				  .then(data => {
+				  	display(JSON.stringify(data));				  	
+				  })
+
+			};
+			
+			function display(User_data){
+
+				console.log(User_data);
+				const obj = JSON.parse(User_data);
+				var temp_arr = [];
+				// console.log(typeof(obj));
+				// console.log(obj);
+
+				for (var i in obj) {
+					temp_arr.push(obj[i]);
+				}
+
+				obj_arr = temp_arr[4];
+
+				console.log(obj_arr[2].email);
+
+				for(let i=0;i<2;i++){
+
+					obj_str += `<div class="user"> <img src=${obj_arr[i].avatar}> <br> <span>ID: ${obj_arr[i].id}</span> <br> <span>Email: ${obj_arr[i].email}</span> <br> <span>First Name: ${obj_arr[i].first_name}</span> <br><span>Last Name: ${obj_arr[i].last_name}</span> </div>`;
+				}
+
+				document.getElementById("users_grid1").innerHTML = obj_str;
+				obj_str = "";
+
+				for(let i=2;i<4;i++){
+
+					obj_str += `<div class="user"> <img src=${obj_arr[i].avatar}> <br> <span>ID: ${obj_arr[i].id}</span> <br> <span>Email: ${obj_arr[i].email}</span> <br> <span>First Name: ${obj_arr[i].first_name}</span> <br><span>Last Name: ${obj_arr[i].last_name}</span> </div>`;
+				}
+
+				document.getElementById("users_grid2").innerHTML = obj_str;
+				obj_str = "";
+
+				for(let i=4;i<6;i++){
+
+					obj_str += `<div class="user"> <img src=${obj_arr[i].avatar}> <br> <span>ID: ${obj_arr[i].id}</span> <br> <span>Email: ${obj_arr[i].email}</span> <br> <span>First Name: ${obj_arr[i].first_name}</span> <br><span>Last Name: ${obj_arr[i].last_name}</span> </div>`;
+				}
+
+				document.getElementById("users_grid3").innerHTML = obj_str;
+				obj_str = "";
+				
+			}
+
+			function loader(){
+
+				let loader_str = `<div class="loader">
+										<div class="ellipsis"> 
+											<span></span> 
+											<span></span> 
+											<span></span>
+										</div>
+									</div>`;
+
+				document.getElementById("loader_div").innerHTML = loader_str;
+
+				setTimeout(() => {
+
+					document.getElementById("loader_div").style.display = 'none';
+				}, 1000);
+
+			}
+
+			function display_users(e){
+
+				loader();
+				fetching();
+				if(document.getElementById("users").style.display == 'block'){
+					document.getElementById("users").style.display = 'none';
+					document.getElementById("getuser").innerHTML = "Get User";
+
+				} else {
+					document.getElementById("users").style.display = 'block';
+					document.getElementById("getuser").innerHTML = "Hide User";
+				}
+
+			}
+
+		</script>
+
+	</body>
+</html>
